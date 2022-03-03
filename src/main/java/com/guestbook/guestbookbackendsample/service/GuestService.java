@@ -2,6 +2,8 @@ package com.guestbook.guestbookbackendsample.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -80,6 +82,17 @@ public class GuestService {
 
 		return guestEntryDto;
 
+	}
+
+	public List<GuestEntryDto> viewAllApprovedGuestEntries(Long id) {
+		List<GuestEntry> guestEntryList = guestRepository.findByUserIdAndStatus(id,"Approved");
+
+		List<GuestEntryDto> guestEntryDtoList = new ArrayList<>();
+		for (GuestEntry eachGuestEntry : guestEntryList) {
+			guestEntryDtoList.add(convertGuestEntryToGuestEntryDto(eachGuestEntry));
+		}
+
+		return guestEntryDtoList;
 	}
 
 }

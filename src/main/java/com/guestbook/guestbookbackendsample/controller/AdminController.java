@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.guestbook.guestbookbackendsample.dto.GuestEntryDto;
 import com.guestbook.guestbookbackendsample.service.AdminService;
+import com.guestbook.guestbookbackendsample.service.GuestService;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
@@ -24,6 +29,9 @@ public class AdminController {
 
 	@Autowired
 	AdminService adminService;
+
+	@Autowired
+	GuestService guestService;
 
 	@GetMapping("/viewAllGuestEntries")
 	public List<GuestEntryDto> viewAllGuestEntries() {
@@ -52,6 +60,34 @@ public class AdminController {
 
 		return ResponseEntity.ok(response);
 
+	}
+
+	@PutMapping("/approveGuestEntryById/{id}")
+	public ResponseEntity<Map<String, String>> approveGuestEntryById(@PathVariable Long id,
+			@RequestBody String status) {
+		System.out.println("approveGuestEntryById...");
+		Map<String, String> response = adminService.approveGuestEntryById(id, status);
+		return ResponseEntity.ok(response);
+	}
+
+	@PutMapping("/rejectGuestEntryById/{id}")
+	public ResponseEntity<Map<String, String>> rejectGuestEntryById(@PathVariable Long id, @RequestBody String status) {
+		System.out.println("rejectGuestEntryById...");
+		Map<String, String> response = adminService.rejectGuestEntryById(id, status);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/downloadImage/{id}")
+	public ResponseEntity<Resource> downloadFile(@PathVariable Long id) {
+
+		System.out.println("downloadImage....admin");
+		// Load file from database
+		GuestEntryDto guestEntryDto = guestService.downloadFile(id);
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(guestEntryDto.getImageType()))
+				.header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=\"" + guestEntryDto.getImageName() + "\"")
+				.body(new ByteArrayResource(guestEntryDto.getImage()));
 	}
 
 }

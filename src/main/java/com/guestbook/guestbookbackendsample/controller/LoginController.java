@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/guestbookapp/login")
 public class LoginController {
 
-	//@Autowired
-	//AdminService adminService;
+	// @Autowired
+	// AdminService adminService;
 
 	@GetMapping("/loginUser")
 	@ResponseBody
@@ -20,5 +20,5 @@ public class LoginController {
 		System.out.println("login controller");
 		return "Success4";
 	}
-	
+
 }

@@ -3,13 +3,19 @@ package com.guestbook.guestbookbackendsample.dto;
 public class GuestEntryDto {
 
 	private long guestEntryId;
-	
+
 	private long userId;
 
 	private String comment;
 
-	private String image;
-	
+	private byte[] image;
+
+	private String imageType;
+
+	private String imageName;
+
+	private String status;
+
 	public long getGuestEntryId() {
 		return guestEntryId;
 	}
@@ -34,17 +40,42 @@ public class GuestEntryDto {
 		this.comment = comment;
 	}
 
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
+	}
+
+	public String getImageType() {
+		return imageType;
+	}
+
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
 	public String toString() {
-		return "GuestEntryDto [userId=" + userId + ", comment=" + comment + ", image=" + image + "]";
+		return "GuestEntryDto [guestEntryId=" + guestEntryId + ", userId=" + userId + ", comment=" + comment
+				+ ", image=" + image + ", status=" + status + "]";
 	}
 
 }

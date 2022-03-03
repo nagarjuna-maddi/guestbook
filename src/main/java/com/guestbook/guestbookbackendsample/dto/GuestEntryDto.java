@@ -1,16 +1,15 @@
 package com.guestbook.guestbookbackendsample.dto;
 
-import java.awt.image.BufferedImage;
-
 public class GuestEntryDto {
-	private long guestEntryId;
 
+	private long guestEntryId;
+	
 	private long userId;
 
 	private String comment;
 
-	private BufferedImage image;
-
+	private String image;
+	
 	public long getGuestEntryId() {
 		return guestEntryId;
 	}
@@ -35,12 +34,17 @@ public class GuestEntryDto {
 		this.comment = comment;
 	}
 
-	public BufferedImage getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(BufferedImage image) {
+	public void setImage(String image) {
 		this.image = image;
+	}
+
+	@Override
+	public String toString() {
+		return "GuestEntryDto [userId=" + userId + ", comment=" + comment + ", image=" + image + "]";
 	}
 
 }

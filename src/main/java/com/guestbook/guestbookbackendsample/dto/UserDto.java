@@ -1,7 +1,7 @@
 package com.guestbook.guestbookbackendsample.dto;
 
 public class UserDto {
-	
+
 	private long userId;
 
 	private String userName;

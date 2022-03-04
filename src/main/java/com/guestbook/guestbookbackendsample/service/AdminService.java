@@ -8,16 +8,27 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.guestbook.guestbookbackendsample.controller.AdminController;
 import com.guestbook.guestbookbackendsample.dto.GuestEntryDto;
 import com.guestbook.guestbookbackendsample.exception.ResourceNotFoundException;
 import com.guestbook.guestbookbackendsample.model.GuestEntry;
 import com.guestbook.guestbookbackendsample.repository.AdminRepository;
 
+/**
+ * @author nagarjunamaddi
+ * 
+ * Class processes all the Admin Activities for Entries added by Guest
+ *
+ */
 @Service
 public class AdminService {
+
+	private static final Logger _LOGGER = LoggerFactory.getLogger(AdminController.class);
 
 	private static final String ADMIN_APPROVE = "Approved";
 	private static final String ADMIN_REJECT = "Rejected";
@@ -29,10 +40,12 @@ public class AdminService {
 	ModelMapper modelMapper;
 
 	/**
-	 * @return
+	 * Method Fetches all Guest Entries to manage
+	 * 
+	 * @return list of Guest Entries
 	 */
 	public List<GuestEntryDto> viewAllGuestEntries() {
-
+		_LOGGER.info("Fetching all Guest Entries");
 		Iterable<GuestEntry> guestEntryList = adminRepository.findAll();
 
 		List<GuestEntryDto> guestEntryDtoList = new ArrayList<>();
@@ -44,32 +57,23 @@ public class AdminService {
 	}
 
 	/**
-	 * @param guestEntryDto
-	 * @return
+	 * Method Updates all Guest Entries
+	 * 
+	 * @return updated Guest Entry
 	 */
 	public GuestEntryDto updateGuestEntry(Long id, GuestEntryDto guestEntryDto) {
+		_LOGGER.info("Updating Guest Entry : {}", guestEntryDto);
+		
 		GuestEntry existingGuestEntry = adminRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Guest Entry not exist with id :" + id));
 
 		existingGuestEntry.setComment(guestEntryDto.getComment());
-		// existingGuestEntry.setImage(guestEntryDto.getImage());
 
 		GuestEntry updatedGuestEntry = adminRepository.save(existingGuestEntry);
 
 		GuestEntryDto updatedGuestEntryDto = convertGuestEntryToGuestEntryDto(updatedGuestEntry);
 
 		return updatedGuestEntryDto;
-
-	}
-
-	/**
-	 * @param guestEntry
-	 */
-	public void approveGuestEntries(GuestEntry guestEntry) {
-		adminRepository.save(guestEntry);
-	}
-
-	public void removeGuestEntries() {
 	}
 
 	private GuestEntryDto convertGuestEntryToGuestEntryDto(GuestEntry guestEntry) {
@@ -79,16 +83,26 @@ public class AdminService {
 		return guestEntryDto;
 	}
 
+	/**
+	 * Method Fetching the specific Guest Entry to manage
+	 * 
+	 * @return list of Guest Entries
+	 */
 	public GuestEntryDto getGuestEntryById(Long guestEntryId) {
-		System.out.println("AdminService..1");
+		_LOGGER.info("Getting Guest Entry : {}", guestEntryId);
 		Optional<GuestEntry> optExistingGuestEntry = adminRepository.findById(guestEntryId);
 		GuestEntry existingGuestEntry = optExistingGuestEntry.get();
 		GuestEntryDto updatedGuestEntryDto = convertGuestEntryToGuestEntryDto(existingGuestEntry);
-		System.out.println("AdminService..2");
 		return updatedGuestEntryDto;
 	}
 
+	/**
+	 * Method Deletes the Guest Entry
+	 * 
+	 * @return Status of Deletion
+	 */
 	public Map<String, Boolean> deleteGuestEntry(Long id) {
+		_LOGGER.info("Deleting Guest Entry : {}", id);
 		GuestEntry existingGuestEntry = adminRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Guest Entry not exist with id :" + id));
 
@@ -99,8 +113,13 @@ public class AdminService {
 
 	}
 
+	/**
+	 * Method Approves the Guest Entry
+	 * 
+	 * @return Status of Approval
+	 */
 	public Map<String, String> approveGuestEntryById(Long id, String status) {
-
+		_LOGGER.info("Appoving Guest Entry : {}", id);
 		GuestEntry existingGuestEntry = adminRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Guest Entry not exist with id :" + id));
 
@@ -113,8 +132,13 @@ public class AdminService {
 		return response;
 	}
 
+	/**
+	 * Method Rejects the Guest Entry
+	 * 
+	 * @return Status of Rejection
+	 */
 	public Map<String, String> rejectGuestEntryById(Long id, String status) {
-
+		_LOGGER.info("Rejecting Guest Entry : {}", id);
 		GuestEntry existingGuestEntry = adminRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Guest Entry not exist with id :" + id));
 		existingGuestEntry.setStatus(ADMIN_REJECT);

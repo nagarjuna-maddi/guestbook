@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -23,23 +25,33 @@ import org.springframework.web.multipart.MultipartFile;
 import com.guestbook.guestbookbackendsample.dto.GuestEntryDto;
 import com.guestbook.guestbookbackendsample.service.GuestService;
 
+/**
+ * @author nagarjunamaddi
+ * 
+ * Class manages the operation such as
+ * Add Comment, View all the Guest Entries which are approved by Admin
+ * for a logged in Guest
+ * 
+ */
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/guestbookapp/guest")
 public class GuestController {
+	
+    private static final Logger _LOGGER = LoggerFactory.getLogger(GuestController.class);
 
 	@Autowired
 	GuestService guestService;
 	
 	@GetMapping("/viewAllApprovedGuestEntries/{id}")
 	public List<GuestEntryDto> viewAllApprovedGuestEntries(@PathVariable Long id) {
-		System.out.println("viewAllApprovedGuestEntries.........");
+		_LOGGER.info("Fetching all Guest Entries which are Approved by Admin");
 		return guestService.viewAllApprovedGuestEntries(id);
 	}
 
 	@PostMapping("/saveGuestEntry")
 	public void saveGuestEntry(@RequestBody GuestEntryDto guestEntryDto) {
-		System.out.println("saveGuestEntry.........23" + guestEntryDto);
+		_LOGGER.info("Saving the GuestEntry : {}" + guestEntryDto);
 		guestService.saveGuestEntry(guestEntryDto);
 	}
 
@@ -50,7 +62,7 @@ public class GuestController {
 		if (file == null) {
 			throw new RuntimeException("You must select the a file for uploading");
 		}
-System.out.println("multipart userId : "+userId);
+		_LOGGER.info("multipart userId : "+userId);
 		guestService.saveGuestImage(userId,file);
 
 		Map<String, String> response = new HashMap<>();
@@ -61,7 +73,7 @@ System.out.println("multipart userId : "+userId);
 
 	@GetMapping("/downloadImage/{id}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable Long id) {
-		System.out.println("downloadImage....guest");
+		_LOGGER.info("DownloadImage Guest Entry Id : {}", id);
 		// Load file from database
 		GuestEntryDto guestEntryDto = guestService.downloadFile(id);
 

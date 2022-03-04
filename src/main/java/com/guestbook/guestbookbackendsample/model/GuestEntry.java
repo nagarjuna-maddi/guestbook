@@ -29,9 +29,6 @@ public class GuestEntry {
 	@Column(name = "comment")
 	private String comment;
 
-//	@Column(name = "image")
-//	private Blob image;
-
 	@Lob
 	@Column(name = "image")
 	private byte[] image;
@@ -76,14 +73,6 @@ public class GuestEntry {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
-//	public Blob getImage() {
-//		return image;
-//	}
-//
-//	public void setImage(Blob image) {
-//		this.image = image;
-//	}
 
 	public String getImageName() {
 		return imageName;

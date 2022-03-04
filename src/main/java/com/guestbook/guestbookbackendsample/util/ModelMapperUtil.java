@@ -6,6 +6,12 @@ import org.modelmapper.convention.MatchingStrategies;
 import com.guestbook.guestbookbackendsample.dto.UserDto;
 import com.guestbook.guestbookbackendsample.model.User;
 
+/**
+ * @author nagarjunamaddi 
+ * 
+ * Class to be used to perform conversions for Entity to Dto and vice-versa
+ *
+ */
 public class ModelMapperUtil {
 	public static UserDto convertUserToUserDto(User user) {
 		ModelMapper modelMapper = new ModelMapper();

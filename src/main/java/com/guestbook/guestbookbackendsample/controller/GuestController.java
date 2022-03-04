@@ -44,14 +44,14 @@ public class GuestController {
 	}
 
 	@PostMapping("/saveGuestImage")
-	public ResponseEntity<Map<String, String>> saveGuestImage(@RequestParam("image") MultipartFile file)
+	public ResponseEntity<Map<String, String>> saveGuestImage(@RequestParam("image") MultipartFile file, @RequestParam("userId") String userId)
 			throws Exception {
 
 		if (file == null) {
 			throw new RuntimeException("You must select the a file for uploading");
 		}
-
-		guestService.saveGuestImage(file);
+System.out.println("multipart userId : "+userId);
+		guestService.saveGuestImage(userId,file);
 
 		Map<String, String> response = new HashMap<>();
 		response.put("status", "SUCCESS");

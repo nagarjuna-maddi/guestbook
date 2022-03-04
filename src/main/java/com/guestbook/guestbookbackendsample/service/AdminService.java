@@ -75,6 +75,7 @@ public class AdminService {
 	private GuestEntryDto convertGuestEntryToGuestEntryDto(GuestEntry guestEntry) {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 		GuestEntryDto guestEntryDto = modelMapper.map(guestEntry, GuestEntryDto.class);
+		guestEntryDto.setUserName(guestEntry.getUser().getUserName());
 		return guestEntryDto;
 	}
 

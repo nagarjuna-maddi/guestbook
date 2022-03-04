@@ -2,10 +2,13 @@ package com.guestbook.guestbookbackendsample.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +21,11 @@ public class GuestEntry {
 
 	@Column(name = "userId")
 	private long userId;
-
+	
+	@OneToOne(fetch = FetchType.EAGER, optional=true)
+    @JoinColumn(name="userId", insertable=false, updatable=false)
+    private User user;
+	
 	@Column(name = "comment")
 	private String comment;
 
@@ -52,6 +59,14 @@ public class GuestEntry {
 
 	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getComment() {

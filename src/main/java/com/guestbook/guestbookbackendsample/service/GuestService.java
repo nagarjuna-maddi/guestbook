@@ -43,7 +43,7 @@ public class GuestService {
 		return guestEntry;
 	}
 
-	public void saveGuestImage(MultipartFile file) throws IOException {
+	public void saveGuestImage(String userId, MultipartFile file) throws IOException {
 		InputStream inputStream = file.getInputStream();
 		String originalName = file.getOriginalFilename();
 		String name = file.getName();
@@ -66,6 +66,7 @@ public class GuestService {
 			guestEntry.setImageType(contentType);
 			guestEntry.setImageName(originalName);
 			guestEntry.setStatus("Pending");
+			guestEntry.setUserId(Long.valueOf(userId));
 			guestRepository.save(guestEntry);
 		} catch (IOException ex) {
 			ex.printStackTrace();
